@@ -86,3 +86,21 @@ def build_VAE(img_shape, intermediate_dim):
 
     return encoder, decoder, vae
 
+def visualize(img,encoder,autoencoder):
+    """Draws original, encoded and decoded images"""
+    # img[None] will have shape of (1, 32, 32, 3) which is the same as the model input
+    code = encoder.predict(img[None])[0]
+    reco = autoencoder.predict(code[None])[0]
+
+    plt.subplot(1,3,1)
+    plt.title("Original")
+    plt.imshow(img.reshape([img.shape[0],img.shape[1]]))
+
+    plt.subplot(1,3,2)
+    plt.title("Code")
+    plt.imshow(code.reshape([code.shape[-1]//4,-1]))
+
+    plt.subplot(1,3,3)
+    plt.title("Reconstructed")
+    plt.imshow(reco.reshape([img.shape[0],img.shape[1]]))
+    plt.show()
